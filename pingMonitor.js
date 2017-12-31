@@ -1,3 +1,11 @@
 var fetch = require('node-fetch');
 
-fetch("http://8.8.8.8/").then(console.log)
+function ping(){
+  fetch("https://www.google.com/")
+  .then(request => {
+    console.log("Ping OK")
+  })
+  .catch(error => console.log("ERROR"));
+}
+
+setInterval(ping, 1000)
