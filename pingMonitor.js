@@ -1,8 +1,10 @@
 const fetch = require('node-fetch');
 const fs = require('fs')
+
 const logFile = "./netLog.txt"
-let isLogged = false;
 const url = "https://www.google.com/"
+
+let isLogged = false;
 
 initializeLogFile();
 setInterval(() => ping(url, 1000), 1000);
