@@ -51,7 +51,7 @@ function outputNoResponse(url){
 }
 
 function logConnectionRestored(){
-  logInfo(`Connection Restored:        ${new Date().toString()} \n`);
+  logInfo(`Connection Restored:        ${new Date().toString()} \n\n`);
 }
 
 function logConnectionLost(){
