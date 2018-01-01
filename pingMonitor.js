@@ -7,7 +7,7 @@ const url = "https://www.google.com/"
 let isLogged = false;
 
 initializeLogFile();
-setInterval(() => ping(url, 1000), 1000);
+setInterval(() => ping(url, 1000), 1500);
 
 /****************************************************************/
 
