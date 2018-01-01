@@ -1,7 +1,3 @@
-// import { setTimeout, setInterval } from 'timers';
-
-// import { setTimeout } from 'timers';
-
 const fetch = require('node-fetch');
 const fs = require('fs')
 const logFile = "./netLog.txt"
