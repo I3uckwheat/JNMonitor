@@ -7,7 +7,7 @@ let isLogged = false;
 const url = "https://www.google.com/"
 
 // initializeLogFile();
-ping(url)
+ping(url, 1000)
 
 /****************************************************************/
 
@@ -18,11 +18,10 @@ function initializeLogFile(){
   });
 }
 
-function ping(url){
-  Promise.race([checkURL(url), rejectTime(1000)])
+function ping(url, ms){
+  Promise.race([fetch(url), promiseTimeout(ms)])
     .then(response => {
-      console.log("success");
-      console.log(response);
+      console.log(response.status);
     })
     .catch(error => {
       console.log("ERROR");
@@ -30,20 +29,10 @@ function ping(url){
     })
 }
 
-function rejectTime(ms){
+function promiseTimeout(ms){
   return new Promise((resolve, reject) => {
     setTimeout(reject, ms, "TimedOut")
   })
-}
-
-function checkURL(url){
-  return fetch(url)
-    .then(response => {
-      return response
-    })
-    .catch(error => {
-      return error
-    })
 }
 
 function logInfo(falureValue){
