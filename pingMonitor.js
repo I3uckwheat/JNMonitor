@@ -1,11 +1,13 @@
+// import { setTimeout } from 'timers';
+
 const fetch = require('node-fetch');
 const fs = require('fs')
 const logFile = "./netLog.txt"
 let isLogged = false;
+const url = "https://www.google.com/"
 
-initializeLogFile();
-
-setInterval(() => ping("https://www.google.com"), 1000)
+// initializeLogFile();
+ping(url)
 
 /****************************************************************/
 
@@ -17,21 +19,31 @@ function initializeLogFile(){
 }
 
 function ping(url){
-  fetch(url)
-  .then(request => {
-    if(isLogged){
-      logInfo(`Back Up:     ${new Date().toString()}\n`)
-      isLogged = !isLogged;
-    }
-    console.log("Response: OK")
+  Promise.race([checkURL(url), rejectTime(1000)])
+    .then(response => {
+      console.log("success");
+      console.log(response);
+    })
+    .catch(error => {
+      console.log("ERROR");
+      console.log(error);
+    })
+}
+
+function rejectTime(ms){
+  return new Promise((resolve, reject) => {
+    setTimeout(reject, ms, "TimedOut")
   })
-  .catch(error => {
-    if(!isLogged){
-      logInfo(`DOWN:        ${new Date().toString()} \n`);
-      isLogged = true;
-    }
-    console.log("NetworkDown");
-  });
+}
+
+function checkURL(url){
+  return fetch(url)
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+      return error
+    })
 }
 
 function logInfo(falureValue){
