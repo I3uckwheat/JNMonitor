@@ -1,3 +1,5 @@
+// import { setTimeout, setInterval } from 'timers';
+
 // import { setTimeout } from 'timers';
 
 const fetch = require('node-fetch');
@@ -6,8 +8,8 @@ const logFile = "./netLog.txt"
 let isLogged = false;
 const url = "https://www.google.com/"
 
-// initializeLogFile();
-ping(url, 1000)
+initializeLogFile();
+setInterval(() => ping(url, 1000), 1000);
 
 /****************************************************************/
 
@@ -21,11 +23,18 @@ function initializeLogFile(){
 function ping(url, ms){
   Promise.race([fetch(url), promiseTimeout(ms)])
     .then(response => {
-      console.log(response.status);
+      if(isLogged){
+        logConnectionRestored();
+        isLogged = !isLogged;
+      }
+      outputResponse(response.status)
     })
     .catch(error => {
-      console.log("ERROR");
-      console.log(error);
+      if(!isLogged){
+        logConnectionLost();
+        isLogged = !isLogged;
+      }
+      outputNoResponse(url);
     })
 }
 
@@ -33,6 +42,22 @@ function promiseTimeout(ms){
   return new Promise((resolve, reject) => {
     setTimeout(reject, ms, "TimedOut")
   })
+}
+
+function outputResponse(responseCode){
+  console.log(`Response: ${responseCode}`)
+}
+
+function outputNoResponse(url){
+  console.log(`No Connection to: ${url}`)
+}
+
+function logConnectionRestored(){
+  logInfo(`Connection Restored:        ${new Date().toString()} \n`);
+}
+
+function logConnectionLost(){
+  logInfo(`Connection timed out:       ${new Date().toString()} \n`);
 }
 
 function logInfo(falureValue){
